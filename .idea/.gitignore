@@ -1,0 +1,9 @@
+
+# Default ignored files
+/workspace.xml
+/vcs.xml
+/compiler.xml
+/$PRODUCT_WORKSPACE_FILE$
+/modules
+/gradle.xml
+/misc.xml

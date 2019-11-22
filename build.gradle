@@ -1,0 +1,7 @@
+task dockerStop(type: Exec) {
+  commandLine 'docker-compose', 'stop'
+}
+
+task dockerRun(type: Exec, dependsOn: ['dockerStop']) {
+  commandLine 'docker-compose', 'up'
+}
