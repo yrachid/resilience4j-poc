@@ -29,20 +29,24 @@ public class CityWeatherApplication {
     @RestController
     public static class CityWeatherController {
 
+        private static final String RESPONSE = "You requested the weather conditions for %s. They are the following: %s";
+
         private final Function<String, RestTemplate> clientBuilder = rootUri -> new RestTemplateBuilder()
                 .requestCustomizers(request -> System.out.println(">>>>>>>>>> " + request.getURI()))
                 .rootUri(rootUri)
                 .build();
 
         private final RestTemplate citiesApiClient = clientBuilder.apply("http://cities:8080");
+        private final RestTemplate weatherApiClient = clientBuilder.apply("http://weather:8080");
 
         @GetMapping("/city/{iata}/weather")
         public String getCityWeather(@PathVariable IataCode iata) {
             final String cityCode = iata.getCode();
 
-            ResponseEntity<String> forEntity = citiesApiClient.getForEntity("/cities/{iata}", String.class, cityCode);
+            ResponseEntity<String> cityDetails = citiesApiClient.getForEntity("/cities/{iata}", String.class, cityCode);
+            ResponseEntity<String> weatherConditions = weatherApiClient.getForEntity("/weather/{iata}", String.class, cityCode);
 
-            return forEntity.getBody();
+            return String.format(RESPONSE, cityDetails.getBody(), weatherConditions.getBody());
         }
     }
 

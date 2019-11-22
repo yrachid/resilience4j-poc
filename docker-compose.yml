@@ -2,11 +2,15 @@ version: '3'
 services:
   cities:
     image: gcr.io/distroless/java:8
+    ports:
+      - '8060:8080'
     volumes:
       - ${PWD}/cities-api/build/libs/cities-api-1.jar:/app.jar
     command: ['/app.jar']
   weather:
     image: gcr.io/distroless/java:8
+    ports:
+      - '8070:8080'
     volumes:
       - ${PWD}/weather-api/build/libs/weather-api-1.jar:/app.jar
     command: ['/app.jar']
